@@ -4,10 +4,9 @@ from flask.ext.sqlalchemy import SQLAlchemy
 app = Flask(__name__)
 app.debug = True
 app.config['SQLALCHEMY_DATABASE_URI'] = \
-    'postgres://postgres@192.168.100.11/ansible_vagrant_test'
+    'postgres://postgres@192.168.100.20/vagrant_ansible_tutorial'
 
 db = SQLAlchemy(app)
-
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -17,7 +16,6 @@ class User(db.Model):
     def __init__(self, username, email):
         self.username = username
         self.email = email
-
 
 @app.route('/')
 def index():

@@ -1,0 +1,34 @@
+---
+
+- hosts: dbservers
+  sudo: True
+  user: vagrant
+
+  tasks:
+    - name: install python-software-properties
+      action: apt pkg=python-software-properties state=present
+
+    - name: update apt repo
+      action: command /usr/bin/apt-get update
+
+    - name: install postgres packages
+      action: apt pkg=$item state=present
+      with_items:
+        - build-essential
+        - python2.6-dev
+        - postgresql
+        - libpq-dev
+        - python-setuptools
+        - python-psycopg2
+
+    - name: upgrade psycopg2
+      action: easy_install name=psycopg2==2.4.5
+
+- hosts: dbservers
+  sudo: True
+  user: vagrant
+  sudo_user: postgres
+
+  tasks:
+    - name: create test database
+      action: postgresql_db name=vagrant_ansible_tutorial
