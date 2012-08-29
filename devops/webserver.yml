@@ -14,7 +14,7 @@
     - name: update apt repo
       action: command /usr/bin/apt-get update
 
-    - name: install common packages needed for python application development
+    - name: install web server packages
       action: apt pkg=$item state=installed
       with_items:
         - build-essential
