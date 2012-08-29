@@ -17,6 +17,7 @@
         - build-essential
         - python2.6-dev
         - postgresql
+        - postgresql-contrib
         - libpq-dev
         - python-setuptools
         - python-psycopg2
@@ -32,3 +33,9 @@
   tasks:
     - name: create test database
       action: postgresql_db name=vagrant_ansible_tutorial
+
+    - name: setup adminpack
+      action: shell /usr/bin/psql template1 < /usr/share/postgresql/8.4/contrib/adminpack.sql
+
+    - name: change postgres password
+      action: shell /usr/bin/psql -d template1 -c "ALTER USER postgres WITH PASSWORD 'postgres';"
