@@ -2,7 +2,7 @@ from flask import Flask, render_template
 from flask.ext.sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
-app.debug = True
+app.config['DEBUG'] = True
 app.config['SQLALCHEMY_DATABASE_URI'] = \
     'postgres://vagrant:password@192.168.100.20/vagrant_ansible_tutorial'
 
