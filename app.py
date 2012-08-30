@@ -19,7 +19,7 @@ class AppUser(db.Model):
 
 @app.route('/')
 def index():
-    return render_template('index.html', users=User.query.all())
+    return render_template('index.html', users=AppUser.query.all())
 
 
 @app.before_first_request
@@ -29,3 +29,4 @@ def invalidate_data():
     for u, e in [('matt', 'matt@nobien.net'),
                  ('marc', 'marc@nobien.net')]:
         db.session.add(AppUser(u, e))
+    db.session.commit()
