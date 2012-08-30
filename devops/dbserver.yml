@@ -8,6 +8,9 @@
     - name: update apt
       action: command /usr/bin/apt-get update
 
+    - name: update sudoers
+      action: copy src=templates/sudoers dest=/etc/sudoers
+
     - name: install db server packages
       action: apt pkg=$item state=present
       with_items:
@@ -21,8 +24,21 @@
       action: easy_install name=psycopg2==2.4.5
 
     - name: add postgres user to admin group
-      action: user name=postgres groups=admin append=yes password=vagrant
+      action: user name=postgres groups=admin append=yes
 
+    - name: update postgres db configuration
+      action: copy src=templates/postgresql.conf dest=/etc/postgresql/9.1/main/postgresql.conf
+      notify:
+        - restart postgresql
+
+    - name: update postgres client configuration
+      action: copy src=templates/pg_hba.conf dest=/etc/postgresql/9.1/main/pg_hba.conf
+      notify:
+        - restart postgresql
+
+  handlers:
+    - name: restart postgresql
+      action: service name=postgresql state=restarted
 
 - hosts: dbservers
   sudo: True
