@@ -5,6 +5,12 @@
   sudo: True
 
   tasks:
+    - name: update apt
+      action: command /usr/bin/apt-get update
+
+    - name: upgrade packages
+      action: command /usr/bin/apt-get upgrade
+
     - name: install python-software-properties
       action: apt pkg=python-software-properties state=present
 

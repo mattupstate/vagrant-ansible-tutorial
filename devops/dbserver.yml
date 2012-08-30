@@ -5,25 +5,24 @@
   user: vagrant
 
   tasks:
-    - name: install python-software-properties
-      action: apt pkg=python-software-properties state=present
-
-    - name: update apt repo
+    - name: update apt
       action: command /usr/bin/apt-get update
 
     - name: install db server packages
       action: apt pkg=$item state=present
       with_items:
-        - build-essential
-        - python2.6-dev
         - postgresql
         - postgresql-contrib
         - libpq-dev
+        - python-dev
         - python-setuptools
-        - python-psycopg2
 
-    - name: upgrade psycopg2
+    - name: install python libraries
       action: easy_install name=psycopg2==2.4.5
+
+    - name: add postgres user to admin group
+      action: user name=postgres groups=admin append=yes password=vagrant
+
 
 - hosts: dbservers
   sudo: True
@@ -31,11 +30,8 @@
   sudo_user: postgres
 
   tasks:
+    - name: create a test database user
+      action: postgresql_user user=vagrant password=password
+
     - name: create test database
-      action: postgresql_db name=vagrant_ansible_tutorial
-
-    - name: setup adminpack
-      action: shell /usr/bin/psql template1 < /usr/share/postgresql/8.4/contrib/adminpack.sql
-
-    - name: change postgres password
-      action: shell /usr/bin/psql -d template1 -c "ALTER USER postgres WITH PASSWORD 'postgres';"
+      action: postgresql_db name=vagrant_ansible_tutorial owner=vagrant

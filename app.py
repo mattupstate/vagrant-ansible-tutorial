@@ -4,11 +4,11 @@ from flask.ext.sqlalchemy import SQLAlchemy
 app = Flask(__name__)
 app.debug = True
 app.config['SQLALCHEMY_DATABASE_URI'] = \
-    'postgres://tutorial:password@192.168.100.20/vagrant_ansible_tutorial'
+    'postgres://vagrant:password@192.168.100.20/vagrant_ansible_tutorial'
 
 db = SQLAlchemy(app)
 
-class User(db.Model):
+class AppUser(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True)
     email = db.Column(db.String(120), unique=True)
@@ -28,4 +28,4 @@ def invalidate_data():
     db.create_all()
     for u, e in [('matt', 'matt@nobien.net'),
                  ('marc', 'marc@nobien.net')]:
-        db.session.add(User(u, e))
+        db.session.add(AppUser(u, e))
