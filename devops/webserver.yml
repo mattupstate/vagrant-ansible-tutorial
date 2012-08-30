@@ -14,9 +14,6 @@
     - name: add nginx ppa
       action: apt_repository repo=ppa:nginx/stable state=present
 
-    - name: update apt repo
-      action: command /usr/bin/apt-get update
-
     - name: install web server packages
       action: apt pkg=$item state=installed
       with_items:

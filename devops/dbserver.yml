@@ -8,6 +8,7 @@
     - name: update apt
       action: command /usr/bin/apt-get update
 
+    # This is necessary due to the box that is being used having an odd sudoers file
     - name: update sudoers
       action: copy src=templates/sudoers dest=/etc/sudoers
 
